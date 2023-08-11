@@ -10,7 +10,7 @@ def connect_db(app):
     db.init_app(app)
     app.app_context().push()
 
-DEFAULT_IMAGE = 'https://www.personality-insights.com/wp-content/uploads/2017/12/default-profile-pic-150x150.jpg'
+DEFAULT_IMAGE = 'https://picsum.photos/200/300'
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -42,3 +42,16 @@ class Post(db.Model):
         default=datetime.datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
+class PostTag(db.Model):
+    __tablename__ = 'posts_tags'
+
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), primary_key=True)
+    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'), primary_key=True)
+
+class Tag(db.Model):
+    __tablename__ = 'tags'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Text, nullable=False, unique=True)
+
+    posts = db.relationship(Post, secondary='posts_tags', backref='tags')

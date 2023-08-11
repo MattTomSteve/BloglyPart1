@@ -9,6 +9,12 @@
 <form method="POST">
     <input type='text' name="title" placeholder="Enter Title">
     <textarea name="content"></textarea>
+
+    {% for tag in tags %}
+        <input type="checkbox" value='{{tag.id}}' name='tags'>
+        <label>{{tag.name}}</label>
+    {%endfor%}
+    
     <a href="/users/{{ user.id }}">Cancel</a>
     <button type="submit">Add</button>
 </form>
